@@ -1,17 +1,6 @@
-class Human {
+class Human extends Creature{
     constructor(x, y,can = false) {
-        this.x = x;
-        this.y = y;
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+        super(x,y);
         this.id;
         this.energy = 30;
         this.preds = 0;
@@ -46,36 +35,6 @@ class Human {
         }
         return found;
     }
-    getOmnivoreid(x,y)
-    {
-        for(var j = 0; j < omniArr.length; j++)
-            if(omniArr[j].x == x && omniArr[j].y == y)
-            {
-                return j;
-            }
-    }
-    getHerbivoreid(x,y)
-    {
-        for(var j = 0; j < herbArr.length; j++)
-        {
-            if(herbArr[j].x == x && herbArr[j].y == y)
-                return j;
-        }
-    }
-    getPredatorid(x,y)
-    {
-        for(var j = 0; j < predArr.length; j++)
-        {
-            if(predArr[j].x == x && predArr[j].y == y)
-                return j;
-        }
-    }
-    getGrassid(x,y)
-    {
-        for(var j = 0; j < grassArr.length; j++)
-            if(grassArr[j].x == x && grassArr[j].y == y)
-                return j;
-    }
     move() {
         var cell = random(this.chooseCell(0));
         if (cell) {
@@ -108,22 +67,22 @@ class Human {
 
                 if(arr[targets[i][1]][targets[i][0]] == 1)
                 {
-                    grassArr.splice(this.getGrassid(targets[i][0],targets[i][1]),1);
+                    grassArr.splice(super.getGrassid(targets[i][0],targets[i][1]),1);
                     arr[targets[i][1]][targets[i][0]] = 0;    
                 }
                 else if(arr[targets[i][1]][targets[i][0]] == 2)
                 {
-                    herbArr.splice(this.getHerbivoreid(targets[i][0],targets[i][1]),1);
+                    herbArr.splice(super.getHerbivoreid(targets[i][0],targets[i][1]),1);
                     arr[targets[i][1]][targets[i][0]] = 0;    
                 }
                 else if(arr[targets[i][1]][targets[i][0]] == 3)
                 {
-                    predArr.splice(this.getPredatorid(targets[i][0], targets[i][1]), 1);
+                    predArr.splice(super.getPredatorid(targets[i][0], targets[i][1]), 1);
                     arr[targets[i][1]][targets[i][0]] = 0;    
                 }
                 else if(arr[targets[i][1]][targets[i][0]] == 4)
                 {
-                    omniArr.splice(this.getOmnivoreid(targets[i][0], targets[i][1]), 1);
+                    omniArr.splice(super.getOmnivoreid(targets[i][0], targets[i][1]), 1);
                     arr[targets[i][1]][targets[i][0]] = 0;    
                 }
             }

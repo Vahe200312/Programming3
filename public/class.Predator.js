@@ -1,17 +1,6 @@
-class Predator {
+class Predator extends Creature{
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+        super(x,y);
         this.id;
         this.energy = 40;
         this.decreaser = 0;
@@ -23,17 +12,7 @@ class Predator {
 
     chooseCell(ch) {
         this.getNewCoords();
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < arr[0].length && y >= 0 && y < arr.length) {
-                if (arr[y][x] == Math.abs(ch)) {
-                    found.push(this.directions[i]);
-                }
-            }
-        }
-        return found;
+        return super.chooseCell(ch);
     }
     getNewCoords() {
         this.directions = [
@@ -46,20 +25,6 @@ class Predator {
             [this.x, this.y + 1],
             [this.x + 1, this.y + 1]
         ];
-    }
-    getHerbivoreid(x, y) {
-        for (var i = 0; i < herbArr.length; i++) {
-            if (herbArr[i].x == x && herbArr[i].y == y)
-                return i;
-        }
-    }
-    getOmnivoreid(x,y)
-    {
-        for(var j = 0; j < omniArr.length; j++)
-            if(omniArr[j].x == x && omniArr[j].y == y)
-            {
-                return j;
-            }
     }
     move() {
         var cell = random(this.chooseCell(0));
@@ -75,7 +40,7 @@ class Predator {
         var omnieatcell = random(this.chooseCell(4));
         if (eatcell) {
                 arr[this.y][this.x] = 0;
-                herbArr.splice(this.getHerbivoreid(eatcell[0], eatcell[1]), 1);
+                herbArr.splice(super.getHerbivoreid(eatcell[0], eatcell[1]), 1);
                 this.x = eatcell[0];
                 this.y = eatcell[1];
                 arr[eatcell[1]][eatcell[0]] = 3;
@@ -86,7 +51,7 @@ class Predator {
         else if(omnieatcell && Math.floor(Math.random() * 80) > 60)
         {
             arr[this.y][this.x] = 0;
-            omniArr.splice(this.getOmnivoreid(omnieatcell[0],omnieatcell[1]),1);
+            omniArr.splice(super.getOmnivoreid(omnieatcell[0],omnieatcell[1]),1);
             this.x = omnieatcell[0];
             this.y = omnieatcell[1];
             arr[omnieatcell[1]][omnieatcell[0]] = 3;

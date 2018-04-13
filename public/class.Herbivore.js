@@ -1,17 +1,6 @@
-class Herbivore {
+class Herbivore extends Creature{
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+        super(x,y);
         this.energy = 4;
         this.id;
         this.spreadc = 2;
@@ -30,24 +19,9 @@ class Herbivore {
             [this.x + 1, this.y + 1]
         ];
     }
-    getGrassid(x, y) {
-        for (var i = 0; i < grassArr.length; i++)
-            if (grassArr[i].x == x && grassArr[i].y == y)
-                return i;
-    }
     chooseCell(ch) {
         this.getNewCoords();
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < arr[0].length && y >= 0 && y < arr.length) {
-                if (arr[y][x] == Math.abs(ch)) {
-                    found.push(this.directions[i]);
-                }
-            }
-        }
-        return found;
+        return super.chooseCell(ch);
     }
     move() {
         var cell = random(this.chooseCell(0));
@@ -85,7 +59,7 @@ class Herbivore {
         var ecell = random(this.chooseCell(1));
         if (ecell) {
             arr[this.y][this.x] = 0;
-            grassArr.splice(this.getGrassid(ecell[0], ecell[1]), 1);
+            grassArr.splice(super.getGrassid(ecell[0], ecell[1]), 1);
             this.x = ecell[0];
             this.y = ecell[1];
             arr[ecell[1]][ecell[0]] = 2;

@@ -1,17 +1,6 @@
-class Omnivore {
+class Omnivore extends Creature{
     constructor(x, y, jbool = false) {
-        this.x = x;
-        this.y = y;
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
+        super(x,y);
         this.energy = 10;
         this.spreaded = false;
         this.spreadtimer = 0;
@@ -31,30 +20,9 @@ class Omnivore {
             [this.x + 1, this.y + 1]
         ];
     }
-    getHerbivoreid(x, y) {
-        for (var i = 0; i < herbArr.length; i++) {
-            if (herbArr[i].x == x && herbArr[i].y == y)
-                return i;
-        }
-    }
-    getGrassid(x, y) {
-        for (var i = 0; i < grassArr.length; i++)
-            if (grassArr[i].x == x && grassArr[i].y == y)
-                return i;
-    }
     chooseCell(ch) {//isOK!
         this.getNewCoords();
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < arr[0].length && y >= 0 && y < arr.length) {
-                if (arr[y][x] == Math.abs(ch)) {
-                    found.push(this.directions[i]);
-                }
-            }
-        }
-        return found;
+        return super.chooseCell(ch);
     }
     move() {
         var cell = random(this.chooseCell(0));
@@ -74,7 +42,7 @@ class Omnivore {
         var newCellGrass = random(this.chooseCell(1));
         if (newCellHerb) {
             arr[this.y][this.x] = 0;
-            herbArr.splice(this.getHerbivoreid(newCellHerb[0], newCellHerb[1]), 1);
+            herbArr.splice(super.getHerbivoreid(newCellHerb[0], newCellHerb[1]), 1);
             this.x = newCellHerb[0];
             this.y = newCellHerb[1];
             arr[newCellHerb[1]][newCellHerb[0]] = 4;
@@ -85,7 +53,7 @@ class Omnivore {
         else {
             if (newCellGrass) {
                 arr[this.y][this.x] = 0;
-                grassArr.splice(this.getGrassid(newCellGrass[0], newCellGrass[1]), 1);
+                grassArr.splice(super.getGrassid(newCellGrass[0], newCellGrass[1]), 1);
                 this.x = newCellGrass[0];
                 this.y = newCellGrass[1];
                 arr[newCellGrass[1]][newCellGrass[0]] = 4;
