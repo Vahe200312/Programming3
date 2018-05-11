@@ -1,4 +1,6 @@
-class Grass extends Creature{
+var Creature = require("./class.Creature.js");
+var random = require("./function.random.js");
+module.exports = class Grass extends Creature{
     constructor(x, y) {
         super(x,y);
     }

@@ -1,5 +1,8 @@
-class Omnivore extends Creature{
-    constructor(x, y, jbool = false) {
+var Creature = require("./class.Creature.js");
+var random = require("./function.random.js");
+
+module.exports = class Omnivore extends Creature{
+    constructor(x, y, se ,jbool = false) {
         super(x,y);
         this.energy = 10;
         this.spreaded = false;

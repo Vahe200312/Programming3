@@ -1,7 +1,10 @@
-class Virus extends Creature{
+var Creature = require("./class.Creature.js");
+var random = require("./function.random.js");
+
+module.exports = class Virus extends Creature{
     constructor(x, y) {
         super(x,y);
-        this.deathtimer = 20;
+        this.deathtimer = 15;
         this.id;
         this.humans = 0;
     }    
@@ -89,6 +92,7 @@ class Virus extends Creature{
                 }
             }
         }
+        return true;
     }
     move() {
         var cell = random(this.chooseCell(0));

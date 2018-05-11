@@ -1,5 +1,8 @@
-class Human extends Creature{
-    constructor(x, y,can = false) {
+var Creature = require("./class.Creature.js");
+var random = require("./function.random.js");
+
+module.exports = class Human extends Creature{
+    constructor(x, y, se, can = false) {
         super(x,y);
         this.id;
         this.energy = 30;
