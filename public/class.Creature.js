@@ -1,5 +1,5 @@
 
-module.exports  = class Creature {
+module.exports = class Creature {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -45,34 +45,28 @@ module.exports  = class Creature {
         for (var i = 0; i < grassArr.length; i++)
             if (grassArr[i].x == x && grassArr[i].y == y)
                 return i;
-    }    getOmnivoreid(x,y)
-    {
-        for(var j = 0; j < omniArr.length; j++)
-            if(omniArr[j].x == x && omniArr[j].y == y)
-            {
+    }
+    getOmnivoreid(x, y) {
+        for (var j = 0; j < omniArr.length; j++)
+            if (omniArr[j].x == x && omniArr[j].y == y) {
                 return j;
             }
     }
-    getHerbivoreid(x,y)
-    {
-        for(var j = 0; j < herbArr.length; j++)
-        {
-            if(herbArr[j].x == x && herbArr[j].y == y)
+    getHerbivoreid(x, y) {
+        for (var j = 0; j < herbArr.length; j++) {
+            if (herbArr[j].x == x && herbArr[j].y == y)
                 return j;
         }
     }
-    getPredatorid(x,y)
-    {
-        for(var j = 0; j < predArr.length; j++)
-        {
-            if(predArr[j].x == x && predArr[j].y == y)
+    getPredatorid(x, y) {
+        for (var j = 0; j < predArr.length; j++) {
+            if (predArr[j].x == x && predArr[j].y == y)
                 return j;
         }
     }
-    getGrassid(x,y)
-    {
-        for(var j = 0; j < grassArr.length; j++)
-            if(grassArr[j].x == x && grassArr[j].y == y)
+    getGrassid(x, y) {
+        for (var j = 0; j < grassArr.length; j++)
+            if (grassArr[j].x == x && grassArr[j].y == y)
                 return j;
     }
 }

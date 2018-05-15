@@ -1,3 +1,4 @@
+
 var Creature = require("./public/class.Creature.js");
 var Grass = require("./public/class.Grass.js");
 var Herbivore = require("./public/class.Herbivore.js");
@@ -123,7 +124,7 @@ function job() {
 		global.virusArr[i].id = i;
 		global.virusArr[i].deathtimer--;
 		global.virusArr[i].move();
-		if(global.virusArr[i].infect())
+		if (global.virusArr[i].infect())
 			global.virusArr[i].dissapear();
 	}
 }
@@ -137,7 +138,7 @@ app.get('/', function (req, res) {
 server.listen(3000);
 var setonce = 0;
 io.on('connection', function (socket) {
-	if(setonce == 0){
+	if (setonce == 0) {
 		console.log("Connected!");
 		global.side = 11.25;
 		global.grassArr = [];
@@ -268,7 +269,7 @@ io.on('connection', function (socket) {
 		setonce++;
 	}
 
-	
+
 	setInterval(function () {
 		job();
 		var data = {
@@ -278,6 +279,27 @@ io.on('connection', function (socket) {
 			grassArr: global.grassArr
 		}
 		socket.emit("sendinfo", data);
+
+		socket.on("create", function (creating_data) {
+			se = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+			if (se == 1) {
+				var fi_se = 2;
+			}
+			else {
+				var fi_se = 2.5;
+			}
+			if (global.arr[creating_data.c_x][creating_data.c_y] == 0) {
+				herb = new Herbivore(creating_data.c_x, creating_data.c_y, fi_se);
+				global.herbArr.push(herb);
+			}
+
+		});
 		// console.log("Worked");
 	}, 400);
 });
+
+function getGrassid(x, y) {
+	for (var i = 0; i < global.grassArr.length; i++)
+		if (global.grassArr[i].x == x && global.grassArr[i].y == y)
+			return i;
+}

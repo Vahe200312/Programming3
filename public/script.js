@@ -5,7 +5,20 @@ function setup() {
 	createCanvas(900, 900);
 	background("grey");
 }
-
+var coord_x , coord_y, _side = 11.25;
+function mousePressed() {
+	coord_x = Math.ceil(mouseX/_side);
+	coord_y = Math.ceil(mouseY/_side);
+	console.log("X:" + mouseX + " Y:" + mouseY + " x:" + coord_x + " y:" + coord_y);
+	creating_data={
+		c_x: coord_x,
+		c_y: coord_y
+	}
+	if(coord_x >= 0 && coord_y <= 900 && coord_y >= 0 && coord_y <= 900)
+		socket.emit("create", creating_data);
+}
+ 
+ 
 socket.on('sendinfo', function (data) {
 	console.log("GOT")
 	if (data.curYear == "Spring")

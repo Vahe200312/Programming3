@@ -42,7 +42,6 @@ module.exports = class Predator extends Creature{
             else if(this.ser == 3.5)
                 arr[this.y][this.x] = 3.5;            
         }
-        console.log(this.ser);
     }
     eat() {
         var eatcell = random(this.chooseCell(2));
