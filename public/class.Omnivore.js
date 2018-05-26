@@ -10,6 +10,7 @@ module.exports = class Omnivore extends Creature{
         this.justborned = jbool;
         this.ptimer = 0;
         this.id;
+        this.ser = se;
     }
     getNewCoords() {
         this.directions = [

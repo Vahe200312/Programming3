@@ -215,7 +215,7 @@ io.on('connection', function (socket) {
 			}
 		}
 		while (ocount > 0) {
-			se = Math.floor(Math.random()) / 2;
+			se = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
 			tx = Math.floor(Math.random() * num);
 			ty = Math.floor(Math.random() * num);
 			if (se == 1) {
@@ -233,7 +233,7 @@ io.on('connection', function (socket) {
 			}
 		}
 		while (humcount > 0) {
-			se = Math.floor(Math.random()) / 2;
+			se = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
 			tx = Math.floor(Math.random() * num);
 			ty = Math.floor(Math.random() * num);
 			if (se == 1) {
