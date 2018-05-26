@@ -57,6 +57,10 @@ socket.on('sendinfo', function (data) {
 				fill("blue");
 				rect(j * data.side, i * data.side, data.side, data.side);
 			}
+			else if (data.arr[i][j] == 4.5) {
+				fill("#00c0fe");
+				rect(j * data.side, i * data.side, data.side, data.side);
+			}			
 			else if (data.arr[i][j] == 5) {
 				fill("#ffcd94");
 				rect(j * data.side, i * data.side, data.side, data.side);

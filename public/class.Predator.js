@@ -43,7 +43,10 @@ module.exports = class Predator extends Creature {
     }
     eat() {
         var eatcell = random(this.chooseCell(2));
+        var eatwcell = random(this.chooseCell(2.5));
         var omnieatcell = random(this.chooseCell(4));
+        var omniweatcell = random(this.chooseCell(4.5));
+        
         if (eatcell) {
             arr[this.y][this.x] = 0;
             herbArr.splice(super.getHerbivoreid(eatcell[0], eatcell[1]), 1);
@@ -53,6 +56,17 @@ module.exports = class Predator extends Creature {
             this.energy += 3;
             //console.log("Predator eated");
             return true;
+        }
+        else if(eatwcell)
+        {
+            arr[this.y][this.x] = 0;
+            herbArr.splice(super.getHerbivoreid(eatcell[0], eatcell[1]), 1);
+            this.x = eatcell[0];
+            this.y = eatcell[1];
+            arr[eatcell[1]][eatcell[0]] = this.ser;
+            this.energy += 3;
+            //console.log("Predator eated");
+            return true;                       
         }
         else if (omnieatcell && Math.floor(Math.random() * 80) > 60) {
             arr[this.y][this.x] = 0;
@@ -77,12 +91,13 @@ module.exports = class Predator extends Creature {
             var anotherPred = random(this.chooseCell(3));
         if (anotherPred) {
             var anotherPred_id = super.getPredatorid(anotherPred[0], anotherPred[1]);
-            if (predArr[anotherPred_id].spreadtimer == 0) {
-                this.spreadtimer = 16;
-                predArr[anotherPred_id].spreadtimer = 16;
+            if (predArr[anotherPred_id].spreadtimer == 0 && this.spreadtimer == 0) {
+
                 var newCell = this.chooseCell(0);
                 var newCellRand = random(newCell);
                 if (newCellRand && this.energy > 10) {
+                    this.spreadtimer = 16;
+                    predArr[anotherPred_id].spreadtimer = 16;
                     var se = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
                     if (se == 1) {
                         var fi_se = 3;
@@ -92,19 +107,19 @@ module.exports = class Predator extends Creature {
                     }
                     var newx = newCellRand[0];
                     var newy = newCellRand[1];
-                    arr[newy][newx] = this.ser
-                    var newPred = new Predator(newx, newy, fi_se);                    
+                    arr[newy][newx] = fi_se;
+                    var newPred = new Predator(newx, newy, fi_se);
                     predArr.push(newPred);
                     return true;
                 }
                 else
                     return false;
             }
-            else{
+            else {
                 return false;
             }
         }
-        else{
+        else {
             return false;
         }
 

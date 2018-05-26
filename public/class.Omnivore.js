@@ -1,15 +1,16 @@
 var Creature = require("./class.Creature.js");
 var random = require("./function.random.js");
 
-module.exports = class Omnivore extends Creature{
-    constructor(x, y, se ,jbool = false) {
-        super(x,y);
+module.exports = class Omnivore extends Creature {
+    constructor(x, y, se, jbool = false) {
+        super(x, y);
         this.energy = 10;
         this.spreaded = false;
         this.spreadtimer = 0;
         this.justborned = jbool;
         this.ptimer = 0;
         this.id;
+        this.spreadtimer = 16;
         this.ser = se;
     }
     getNewCoords() {
@@ -34,7 +35,7 @@ module.exports = class Omnivore extends Creature{
             arr[this.y][this.x] = 0;
             this.x = cell[0];
             this.y = cell[1];
-            arr[this.y][this.x] = 4;
+            arr[this.y][this.x] = this.ser;
             return true;
         }
         else
@@ -49,7 +50,7 @@ module.exports = class Omnivore extends Creature{
             herbArr.splice(super.getHerbivoreid(newCellHerb[0], newCellHerb[1]), 1);
             this.x = newCellHerb[0];
             this.y = newCellHerb[1];
-            arr[newCellHerb[1]][newCellHerb[0]] = 4;
+            arr[newCellHerb[1]][newCellHerb[0]] = this.ser;
             this.energy++;
             //console.log("Omnivore eated grassEater");
             return true;
@@ -60,7 +61,7 @@ module.exports = class Omnivore extends Creature{
                 grassArr.splice(super.getGrassid(newCellGrass[0], newCellGrass[1]), 1);
                 this.x = newCellGrass[0];
                 this.y = newCellGrass[1];
-                arr[newCellGrass[1]][newCellGrass[0]] = 4;
+                arr[newCellGrass[1]][newCellGrass[0]] = this.ser;
                 this.energy++;
                 //console.log("Omnivore eated");
                 return true;
@@ -69,69 +70,58 @@ module.exports = class Omnivore extends Creature{
         }
     }
 
-    getAnotherOmnivore(x, y) {
-        var omnitosp = random(this.chooseCell(4));
-        if (omnitosp) {
-            x = omnitosp[0];
-            y = omnitosp[1];
-            for (var i = 0; i < omniArr.length; i++)
-            {
-                if (omniArr[i].x == x && omniArr[i].y == y)
-                {
-                    if(omniArr[i].spreaded == false)
-                        return i;
-                    else 
-                        return -1;
-                }
-            }
-                
-        }
-        else {
-            return -1;
-        }
-
-    }
     spread() {
-        var tarid = this.getAnotherOmnivore();
-        var emptycellstospread = random(this.chooseCell(0));
-        //console.log(this.id + " " + this.spreaded);
-        if (tarid != -1 && this.spreaded == false && this.justborned == false && omniArr.length < 300) {
-            if (emptycellstospread) {
-                this.spreaded = true;
-                omniArr[tarid].spreaded = true;
-                var newx = emptycellstospread[0];
-                var newy = emptycellstospread[1];
-                arr[newy][newx] = 4;
-                var newOmni = new Omnivore(newx, newy, true);
-                omniArr.push(newOmni);
-                return true;
+        if (this.spreadtimer > 0)
+            this.spreadtimer--;
+        if (this.ser == 4)
+            var anotherOmni = random(this.chooseCell(4.5));
+        else
+            var anotherOmni = random(this.chooseCell(4));
+        if (anotherOmni) {
+            var anotherOmni_id = super.getOmnivoreid(anotherOmni[0], anotherOmni[1]);
+            if (this.spreadtimer == 0 && omniArr[anotherOmni_id].spreadtimer == 0) {
+                var emptycell = random(this.chooseCell(0));
+                if (emptycell) {
+                    this.spreadtimer = 16;
+                    omniArr[anotherOmni_id].spreadtimer = 16;
+                    var se = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
+                    if (se == 1) {
+                        var fi_se = 4;
+                    }
+                    else {
+                        var fi_se = 4.5;
+                    }
+                    var newx = emptycell[0];
+                    var newy = emptycell[1];
+                    arr[newy][newx] = fi_se;
+                    var newOmni = new Omnivore(newx, newy, fi_se);
+                    omniArr.push(newOmni);
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
             else
                 return false;
         }
-        else {
+        else
             return false;
-        }
     }
-    setMaxEn(){
-        if(this.energy > 15)
+    setMaxEn() {
+        if (this.energy > 15)
             this.energy = 15;
     }
-    backtocanspread()
-    {
-        if(this.spreaded == true)
-        {
+    backtocanspread() {
+        if (this.spreaded == true) {
             this.spreadtimer++;
-            if(this.spreadtimer > 50)
-            {
+            if (this.spreadtimer > 50) {
                 this.spreaded = false;
-            }            
+            }
         }
-        if(this.justborned == true)
-        {
+        if (this.justborned == true) {
             this.ptimer++;
-            if(this.ptimer > 30)
-            {
+            if (this.ptimer > 30) {
                 this.justborned = false;
             }
         }
