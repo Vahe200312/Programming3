@@ -6,6 +6,8 @@ var Omnivore = require("./public/class.Omnivore.js");
 var Predator = require("./public/class.Predator.js");
 var Virus = require("./public/class.Virus.js");
 var Human = require("./public/class.Human.js");
+var AntiVirus = require("./public/class.AntiVirus.js");
+
 
 var express = require('express');
 var app = express();
@@ -13,7 +15,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 app.use(express.static("."));
-
+var disast = "NO DISASTER";
 function job() {
 	global.timeofyear += 4;
 	if (global.timeofyear % 300 == 0) {
@@ -30,6 +32,14 @@ function job() {
 		}
 		else if (global.timeofyear % 300 == 0) {
 			global.curYear = "Spring";
+		}
+	}
+	var ran = Math.floor(Math.random() * (1000 - 0 + 1000)) + 0;
+	disast = "NO DISASTER";
+	if(ran > 500)
+	{
+		if(ran < 600)
+		{
 			if (global.virusArr.length == 0) {
 				vcount = Math.floor(Math.random() * 3) + 1;
 				while (vcount > 0) {
@@ -46,11 +56,14 @@ function job() {
 			}
 		}
 	}
+	if(virusArr.length > 20){
+		disast = "VIRUS EPIDEMY";
+	}
 	for (i = 0; i < global.grassArr.length; i++) {
 		if (global.curYear == "Spring")
 			global.grassArr[i].bytime = 3;
 		else if (global.curYear == "Summer")
-			global.grassArr[i].bytime = 1;
+			global.grassArr[i].bytime = 2;
 		else if (global.curYear == "Autumn")
 			global.grassArr[i].bytime = 4;
 		else if (global.curYear == "Winter")
@@ -113,11 +126,10 @@ function job() {
 	for (i = 0; i < global.humanArr.length; i++) {
 		global.humanArr[i].id = i;
 		global.humanArr[i].energy--;
+		global.humanArr[i].spread();		
 		global.humanArr[i].move();
-		global.humanArr[i].spread();
-		global.humanArr[i].backtocanspread();
-		global.humanArr[i].destroy();
-		global.humanArr[i].die();
+		if(!global.humanArr[i].destroy())
+			global.humanArr[i].die();
 	}
 
 	for (i = 0; i < global.virusArr.length; i++) {
@@ -126,6 +138,11 @@ function job() {
 		global.virusArr[i].move();
 		if (global.virusArr[i].infect())
 			global.virusArr[i].dissapear();
+	}
+	for (i = 0; i < global.antiArr.length; i++) {
+		global.antiArr[i].id = i;
+		global.antiArr[i].infect();
+		global.antiArr[i].move();
 	}
 }
 
@@ -147,19 +164,21 @@ io.on('connection', function (socket) {
 		global.omniArr = [];
 		global.humanArr = [];
 		global.virusArr = [];
+		global.antiArr = [];
 		var herb;
 		var gr;
 		var pred;
 		var omni;
 		var human;
 		var virus;
-		var count = 80, hcount = 80, pcount = 60, ocount = 80, humcount = 8, vcount = 4;
+		var count = 80, hcount = 160, pcount = 120, ocount = 120, humcount = 30, vcount = 4,ancount = 10;
 		global.arr = [];
 		var tx, ty, tx, ty;
 		var eatch;
 		var se;
 		var fi_se;
 		var num = 80;
+		global.humdied = 0;
 		global.arr = new Array(num);
 		var j = -1;
 		for (var i = 0; i < global.arr.length; i++) {
@@ -244,7 +263,7 @@ io.on('connection', function (socket) {
 			}
 			if (tx >= 0 && tx < global.arr[0].length && ty >= 0 && ty < global.arr.length) {
 				if (global.arr[tx][ty] == 0) {
-					human = new Human(tx, ty, se);
+					human = new Human(tx, ty, fi_se);
 					global.humanArr.push(human);
 					humcount--;
 				}
@@ -261,7 +280,19 @@ io.on('connection', function (socket) {
 					vcount--;
 				}
 			}
+		}		
+		while (ancount > 0) {
+			tx = Math.floor(Math.random() * num);
+			ty = Math.floor(Math.random() * num);
+			if (tx >= 0 && tx < global.arr[0].length && ty >= 0 && ty < global.arr.length) {
+				if (global.arr[tx][ty] == 0) {
+					virus = new AntiVirus(tx, ty);
+					global.antiArr.push(virus);
+					ancount--;
+				}
+			}
 		}
+
 
 		var cellch;
 		global.timeofyear = 300;
@@ -276,24 +307,17 @@ io.on('connection', function (socket) {
 			arr: global.arr,
 			curYear: global.curYear,
 			side: global.side,
-			grassArr: global.grassArr
+			grassArr: global.grassArr,
+			humans: humanArr.length,
+			grass: grassArr.length,
+			omni: omniArr.length,
+			herb: herbArr.length,
+			pred: predArr.length,
+			anti: antiArr.length,
+			disaster: disast
 		}
 		socket.emit("sendinfo", data);
 
-		socket.on("create", function (creating_data) {
-			se = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-			if (se == 1) {
-				var fi_se = 2;
-			}
-			else {
-				var fi_se = 2.5;
-			}
-			if (global.arr[creating_data.c_x][creating_data.c_y] == 0) {
-				herb = new Herbivore(creating_data.c_x, creating_data.c_y, fi_se);
-				global.herbArr.push(herb);
-			}
-
-		});
 		// console.log("Worked");
 	}, 400);
 });

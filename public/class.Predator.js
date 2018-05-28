@@ -10,6 +10,7 @@ module.exports = class Predator extends Creature {
         this.bytime = 3;
         this.ser = se;
         this.spreadtimer = 16;
+        this.old = 40;
     }
 
 
@@ -60,15 +61,15 @@ module.exports = class Predator extends Creature {
         else if(eatwcell)
         {
             arr[this.y][this.x] = 0;
-            herbArr.splice(super.getHerbivoreid(eatcell[0], eatcell[1]), 1);
-            this.x = eatcell[0];
-            this.y = eatcell[1];
-            arr[eatcell[1]][eatcell[0]] = this.ser;
+            herbArr.splice(super.getHerbivoreid(eatwcell[0], eatwcell[1]), 1);
+            this.x = eatwcell[0];
+            this.y = eatwcell[1];
+            arr[eatwcell[1]][eatwcell[0]] = this.ser;
             this.energy += 3;
             //console.log("Predator eated");
             return true;                       
         }
-        else if (omnieatcell && Math.floor(Math.random() * 80) > 60) {
+        else if (omnieatcell) {
             arr[this.y][this.x] = 0;
             omniArr.splice(super.getOmnivoreid(omnieatcell[0], omnieatcell[1]), 1);
             this.x = omnieatcell[0];
@@ -76,6 +77,16 @@ module.exports = class Predator extends Creature {
             arr[omnieatcell[1]][omnieatcell[0]] = this.ser;
             this.energy += 3;
             return true;
+        }
+        else if(omniweatcell)
+        {
+            arr[this.y][this.x] = 0;
+            omniArr.splice(super.getOmnivoreid(omniweatcell[0], omniweatcell[1]), 1);
+            this.x = omniweatcell[0];
+            this.y = omniweatcell[1];
+            arr[omniweatcell[1]][omniweatcell[0]] = this.ser;
+            this.energy += 3;
+            return true;            
         }
         else {
             return false;
@@ -125,7 +136,8 @@ module.exports = class Predator extends Creature {
 
     }
     die() {
-        if (this.energy <= 0) {
+        this.old--;
+        if (this.energy <= 0 || this.old <= 0) {
             arr[this.y][this.x] = 0;
             predArr.splice(this.id, 1);
             this.energy = 0;

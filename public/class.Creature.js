@@ -69,4 +69,14 @@ module.exports = class Creature {
             if (grassArr[j].x == x && grassArr[j].y == y)
                 return j;
     }
+    getHumanid(x, y) {
+        for (var j = 0; j < humanArr.length; j++)
+            if (humanArr[j].x == x && humanArr[j].y == y)
+                return j;
+    }   
+    getVirusid(x, y) {
+        for (var j = 0; j < virusArr.length; j++)
+            if (virusArr[j].x == x && virusArr[j].y == y)
+                return j;
+    }     
 }

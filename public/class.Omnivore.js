@@ -12,6 +12,7 @@ module.exports = class Omnivore extends Creature {
         this.id;
         this.spreadtimer = 16;
         this.ser = se;
+        this.old = 30;
     }
     getNewCoords() {
         this.directions = [
@@ -127,7 +128,8 @@ module.exports = class Omnivore extends Creature {
         }
     }
     die() {
-        if (this.energy <= 0) {
+        this.old--;
+        if (this.energy <= 0 || this.old <= 0) {
             arr[this.y][this.x] = 0;
             omniArr.splice(this.id, 1);
             this.energy = 0;

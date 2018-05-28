@@ -27,7 +27,9 @@ module.exports = class Virus extends Creature{
             var x = this.directions[i][0];
             var y = this.directions[i][1];
             if (x >= 0 && x < arr[0].length && y >= 0 && y < arr.length) {
-                if (arr[y][x] == Math.abs(ch) || arr[y][x] == ch1 || arr[y][x] == ch2 || arr[y][x] == ch3) {
+                if (arr[y][x] == ch || arr[y][x] == ch + 0.5
+                 || arr[y][x] == ch1 || arr[y][x] == ch1+0.5 || arr[y][x] == ch2 
+                ||arr[y][x] == ch2 + 0.5 || arr[y][x] == ch3 || arr[y][x] == ch3+0.5) {
                     found.push(this.directions[i]);
                 }
             }
@@ -43,7 +45,6 @@ module.exports = class Virus extends Creature{
     infect()
     {
         var targets = this.chooseCell(2,3,4,5);
-
         if(targets)
         {
             for(var i = 0; i < targets.length; i++)
@@ -62,28 +63,29 @@ module.exports = class Virus extends Creature{
             this.humans = 0;
             for(var i = 0; i < targets.length; i++)
             {
-                if(arr[targets[i][1]][targets[i][0]] == 5)
+                if(arr[targets[i][1]][targets[i][0]] == 5 || arr[targets[i][1]][targets[i][0]] == 5.5)
                 {
                     humanArr.splice(this.getHumanid(targets[i][0], targets[i][1]), 1);
+                    humdied++;
                     var newVirus = new Virus(targets[i][0], targets[i][1]);
                     virusArr.push(newVirus);
                     arr[targets[i][1]][targets[i][0]] = 6;    
                 }
-                else if(arr[targets[i][1]][targets[i][0]] == 4)
+                else if(arr[targets[i][1]][targets[i][0]] == 4 || arr[targets[i][1]][targets[i][0]] == 4.5)
                 {
                     omniArr.splice(super.getOmnivoreid(targets[i][0], targets[i][1]), 1);
                     var newVirus = new Virus(targets[i][0], targets[i][1]);
                     virusArr.push(newVirus);
                     arr[targets[i][1]][targets[i][0]] = 6;         
                 }
-                else if(arr[targets[i][1]][targets[i][0]] == 3)
+                else if(arr[targets[i][1]][targets[i][0]] == 3 || arr[targets[i][1]][targets[i][0]] == 3.5)
                 {
                     predArr.splice(super.getPredatorid(targets[i][0], targets[i][1]), 1);
                     var newVirus = new Virus(targets[i][0], targets[i][1]);
                     virusArr.push(newVirus);
                     arr[targets[i][1]][targets[i][0]] = 6;
                 }
-                else if(arr[targets[i][1]][targets[i][0]] == 2)
+                else if(arr[targets[i][1]][targets[i][0]] == 2 || arr[targets[i][1]][targets[i][0]] == 2.5)
                 {
                     herbArr.splice(super.getHerbivoreid(targets[i][0],targets[i][1]),1);
                     var newVirus = new Virus(targets[i][0],targets[i][1]);

@@ -10,6 +10,7 @@ module.exports = class Herbivore extends Creature{
         this.spmultiply = 1;
         this.bytime = 2;
         this.ser = se;
+        this.old = 40;
     }
     getNewCoords() {
         this.directions = [
@@ -64,7 +65,8 @@ module.exports = class Herbivore extends Creature{
         }
     }
     die() {
-        if (this.energy <= 0) {
+        this.old--;
+        if (this.energy <= 0 || this.old <= 0) {
             arr[this.y][this.x] = 0;
             herbArr.splice(this.id, 1);
             this.energy = 0;
